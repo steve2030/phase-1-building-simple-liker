@@ -3,7 +3,41 @@ const EMPTY_HEART = '♡'
 const FULL_HEART = '♥'
 
 // Your JavaScript code goes here!
+const heartSpans = document.querySelectorAll('.like-glyph');
 
+
+
+heartSpans.forEach(heartSpan => {
+  const countSpan = document.createElement('span');
+  countSpan.style.color = 'black';
+  countSpan.style.fontWeight = 'bold';
+
+  heartSpan.addEventListener('click', (e) => {
+    e.preventDefault();
+    mimicServerCall().then((res) => {
+      let count = 0;
+      if (heartSpan.classList[1] === 'activated-heart') {
+        heartSpan.innerText = EMPTY_HEART;
+        heartSpan.classList.remove('activated-heart');
+        count -= 1
+      } else {
+        heartSpan.innerText = FULL_HEART;
+        heartSpan.classList.add('activated-heart');
+        count += 1;
+
+      }
+      alert(res);
+      countSpan.innerText = count;
+      heartSpan.appendChild(countSpan);
+
+    }).catch((error) => {
+      const divError = document.querySelector('.hidden');
+      divError.classList.remove('hidden');
+      divError.textContent = error;
+      setTimeout(() => divError.classList.add('hidden'), 3000);
+    })
+  })
+})
 
 
 
